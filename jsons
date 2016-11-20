@@ -1,0 +1,25 @@
+//add user
+//POST
+    http://192.168.1.12/api
+
+{"devicetype":"app_name#"}
+//this outputs key generated for user
+
+
+//status of of all lights known to bridge
+//GET  
+    http://192.168.1.12/api/YqRUanSsJWqimwEXaox6OaxaRS8UxIoMjuv5IvNg/lights/
+
+
+//set states of light
+//PUT
+    http://192.168.1.12/api/YqRUanSsJWqimwEXaox6OaxaRS8UxIoMjuv5IvNg/lights/3/state/
+
+{
+    "on":true, //bool
+    "hue":14910, //0-65535
+    "bri":200, //1-254
+    "sat":200, //0-254
+    "ct":500, //153-500
+}
+
