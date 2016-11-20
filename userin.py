@@ -14,4 +14,3 @@ class Schedule:
             return length
         else:
             return 11
-
