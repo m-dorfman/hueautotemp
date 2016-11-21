@@ -11,7 +11,7 @@
     http://192.168.1.12/api/YqRUanSsJWqimwEXaox6OaxaRS8UxIoMjuv5IvNg/lights/
 
 
-//set states of light
+//set states ofw light
 //PUT
     http://192.168.1.12/api/YqRUanSsJWqimwEXaox6OaxaRS8UxIoMjuv5IvNg/lights/3/state/
 
