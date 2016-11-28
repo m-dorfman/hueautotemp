@@ -1,3 +1,5 @@
 ./idea
 ./test.py
-./venv
+./venv/
+./ALARM.mp3
+./VLC.app/

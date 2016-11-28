@@ -6,27 +6,27 @@ calculates time values for the time of day
 from datetime import timedelta
 
 
-class TimeCalc:
+class TimeCalc(object):
     def __init__(self, wake_time, day_length, down_length):
-        self.wake_time = self.timeconvert(wake_time)
-        self.day_length = self.timeconvert(day_length)
-        self.down_length = self.timeconvert(down_length)
-        # both received as str
+        self.wake_time = wake_time
+        self.day_length = day_length
+        self.down_length = down_length
+        # received as timedelta
 
-    def timeconvert(self, time_in):
-        time_in = str(time_in)
-        (h,m,s) = (0,0,0)
-        try:
-            (h,m,s) = time_in.split(':')
-        except ValueError:
-            try:
-                (h,m) = time_in.split(':')
-            except ValueError:
-                h = time_in
-
-        time_out = timedelta(hours=int(h), minutes=int(m))
-
-        return time_out
+    # def timeconvert(self, time_in):
+    #     time_in = str(time_in)
+    #     (h,m,s) = (0,0,0)
+    #     try:
+    #         (h,m,s) = time_in.split(':')
+    #     except ValueError:
+    #         try:
+    #             (h,m) = time_in.split(':')
+    #         except ValueError:
+    #             h = time_in
+    #
+    #     time_out = timedelta(hours=int(h), minutes=int(m))
+    #
+    #     return time_out
 
     def wakestart(self): # first waking phase start
         wake_time = self.wake_time
@@ -55,13 +55,15 @@ class TimeCalc:
 
     def downend1(self):
         day_end = self.dayend()
-        phasedown_a = (self.down_length/2)
+        phasedown_a = (self.down_length * (3/4))
 
         phasedown_a += day_end
 
         return phasedown_a
 
-
+    def downend2(self):
+        day_end = self.dayend() + self.down_length
+        return day_end
 
 
 

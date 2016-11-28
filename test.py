@@ -109,14 +109,28 @@
 # do()
 #
 #
+# class A:
+#
+#     @classmethod
+#     def a(cls):
+#         print(1)
+#     def b(self):
+#         print(2)
+#
+# A.a()
+#
+# from datetime import timedelta, datetime
+# from time import time, sleep
+#
+# a = timedelta(days=1,minutes=1)
+#
+# print(a.total_seconds())
+#
+# t = datetime.now().hour
+# print(t)
+#
+# k = True
+# while k == True:
+#     print(time())
+#     sleep(2)
 
-a = input()
-def do(a):
-    try:
-        int(a)
-        print(a)
-
-    except:
-        print('no')
-
-do(a)

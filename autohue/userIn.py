@@ -1,42 +1,56 @@
 from datetime import timedelta
 
-class Schedule:
-    # def __init__(self):
 
+class Schedule(object):
+    # def __init__(self):
     def timecheck(self, lim, question):
+        val_err = 'some time val is out of range'
         a = True
+
         while a == True:
             length = input(question)
+
+            # Python allows for EAFP methodology, hence all the try/catch
             try:
                 (h, m, s) = length.split(':')
+
                 try:
                     if (int(h) < lim >= 0) and (int(m) < 60 >= 0) and (int(s) < 60 >= 0):
                         length = timedelta(hours=int(h), minutes=int(m), seconds=int(s))
                         return length
+
                     else:
-                        print('some time val is out of range')
+                        print(val_err)
+
                 except ValueError:
-                    print('some time val is out of range')
+                    print(val_err)
+
             except ValueError:
                 try:
                     (h, m) = length.split(':')
+
                     try:
                         if (int(h) < lim >= 0) and (int(m) < 60 >= 0):
                             length = timedelta(hours=int(h), minutes=int(m))
                             return length
+
                         else:
-                            print('some time val is out of range')
+                            print(val_err)
+
                     except ValueError:
-                        print('some time val is out of range')
+                        print(val_err)
+
                 except ValueError:
                     try:
                         if int(length) < lim >= 0:
                             h = int(length)
                             return timedelta(hours=h)
+
                         else:
-                            print('some time val is out of range')
+                            print(val_err)
+
                     except ValueError:
-                        print('some time val is out of range')
+                        print(val_err)
 
     def waketime(self):
         question = "when will you wake? "
