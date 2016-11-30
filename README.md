@@ -49,5 +49,7 @@ setting up python celery to manage tasking and not always having to worry whethe
 
 web functionality: flask framework since this is so simple, and a front end because we like it pretty
 
+make the lights mimic daylight even more by adding some occasion flutter as if there we clouds passing by
+
 --
 //MDorfman
