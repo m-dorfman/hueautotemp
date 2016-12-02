@@ -24,7 +24,7 @@ At current the program is very rudimentary:
 
 To use: (assuming RPi talking to router)
 
-1.	in terminal, <arp -a> to find the pi and hue
+1.	in terminal, 'arp '-a to find the pi and hue
 
 2.	follow API instructions to create new user and get generated key: http://www.developers.meethue.com/documentation/configuration-api#71_create_user
 
@@ -50,7 +50,7 @@ cycle = length, starting to ending temp in kelvin
 
 future improvements:
 
--a linear function does an okay job to mimic daylight, but it could be improved. numerical techniques, specifically a cubic polynomial spline interpolation(https://en.wikipedia.org/wiki/Spline_interpolation) would give a nice smooth curve that would better mimic real life temperature change in light. we can use three known points to get our curve: a(start time, start temp), b(end time/n, some temp), c(end time, end temp). 
+-a linear function does an okay job to mimic daylight, but it could be improved. numerical techniques, specifically a cubic polynomial spline interpolation (https://en.wikipedia.org/wiki/Spline_interpolation) would give a nice smooth curve that would better mimic real life temperature change in light. we can use three known points to get our curve: a(start time, start temp), b(end time/n, some temp), c(end time, end temp). 
 point b is the point that would decide the curviness of our curve.
 
 -at current, the function itself is computed on a per use basis. it would computationally more efficient to set a function and simply treat it as a scalar
