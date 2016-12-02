@@ -29,6 +29,10 @@ To use: (assuming RPi talking to router)
 2.	follow API instructions to create new user and get generated key: http://www.developers.meethue.com/documentation/configuration-api#71_create_user
 
 3.	edit the JSON code in main module to use your new user
+      in `autohue.emmiter.SendJSON`
+      ```python 
+      address = 'http://ADDRESS/api/USER_KEY/lights/3/state/'
+      ```
 
 4.	SSH into pi and transfer the script
 
