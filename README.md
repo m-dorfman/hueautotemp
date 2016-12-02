@@ -24,7 +24,7 @@ At current the program is very rudimentary:
 
 To use: (assuming RPi talking to router)
 
-1.	in terminal, 'arp '-a to find the pi and hue
+1.	in terminal, `arp `-a to find the pi and hue
 
 2.	follow API instructions to create new user and get generated key: http://www.developers.meethue.com/documentation/configuration-api#71_create_user
 
