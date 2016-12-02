@@ -32,7 +32,7 @@ To use: (assuming RPi talking to router)
 
 4.	SSH into pi and transfer the script
 
-5.	run it and answer the questions. the program will wait unti your set waking time and begin it's first cycle
+5.	run it and answer the questions. the program will wait until your set waking time and begin it's first cycle
 
 
 cycle = length, starting to ending temp in kelvin
