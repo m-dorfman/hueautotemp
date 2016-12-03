@@ -41,7 +41,7 @@ To use: (assuming RPi talking to router)
 
 cycle = length, starting to ending temp in kelvin
 
-`1.	gentle wake = 45min, 2000K to 4500K
+1.	gentle wake = 45min, 2000K to 4500K
 
 2.	transition to day = 15min, 4500K to 6000K
 
@@ -49,7 +49,7 @@ cycle = length, starting to ending temp in kelvin
 
 4.	first sundown = (3/4)*length set by user, 6000K to 3000K
 
-5.	night phase = (1/4)*length set by user, 3000K to 2000K`
+5.	night phase = (1/4)*length set by user, 3000K to 2000K
 
 
 future improvements:
