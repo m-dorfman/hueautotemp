@@ -41,7 +41,7 @@ To use: (assuming RPi talking to router)
 
 cycle = length, starting to ending temp in kelvin
 
-1.	gentle wake = 45min, 2000K to 4500K
+`1.	gentle wake = 45min, 2000K to 4500K
 
 2.	transition to day = 15min, 4500K to 6000K
 
@@ -49,12 +49,12 @@ cycle = length, starting to ending temp in kelvin
 
 4.	first sundown = (3/4)*length set by user, 6000K to 3000K
 
-5.	night phase = (1/4)*length set by user, 3000K to 2000K
+5.	night phase = (1/4)*length set by user, 3000K to 2000K`
 
 
 future improvements:
 
--a linear function does an okay job to mimic daylight, but it could be improved. numerical techniques, specifically a cubic polynomial spline interpolation (https://en.wikipedia.org/wiki/Spline_interpolation) would give a nice smooth curve that would better mimic real life temperature change in light. we can use three known points to get our curve: a(start time, start temp), b(end time/n, some temp), c(end time, end temp). 
+-a linear function does an okay job to mimic daylight, but it could be improved. numerical techniques, specifically a cubic polynomial spline interpolation (https://en.wikipedia.org/wiki/Spline_interpolation) would give a nice smooth curve that would better mimic real life temperature change in light. we can use three known points to get our curve: `a(start time, start temp)`, `b(end time/n, some temp)`, `c(end time, end temp)`. 
 point b is the point that would decide the curviness of our curve.
 
 -at current, the function itself is computed on a per use basis. it would computationally more efficient to set a function and simply treat it as a scalar
