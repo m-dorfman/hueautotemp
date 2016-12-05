@@ -19,6 +19,13 @@ At current the program is very rudimentary:
 
 1.	Simply use linear point approximations with known light temperatures of each phase(start temp and end temp are set) as a dependent values, and times input by user(wake time, length of the day, and how long sundown should be). Program generates simple linear function that can be cycled through its phase, checking the time and setting the according light temperature.
 
+      Method of function call is class based: 
+            1. Instance of `hueautotemp.lightCalc.LinCalc` is created at the start of each phase
+            2. `LinCalc.linfunct` is called as an instace variable of the given phase. Recieves the current time (the independent value) as a timedelta vallue
+            3. Garbage collector end of phase clears the LinCalc object out of memory
+            4. Repeat until program terminates(bedtime)
+            
+
 2.	Make the lights nice!
 
 
@@ -36,7 +43,7 @@ To use: (assuming RPi talking to router)
 
 4.	SSH into pi and transfer the script
 
-5.	run it and answer the questions. the program will wait until your set waking time and begin its first cycle
+5.	run it, `~./main.py` and answer the questions. the program will wait until your set waking time and begin its first cycle
 
 
 cycle = length, starting to ending temp in kelvin
