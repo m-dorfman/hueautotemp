@@ -24,7 +24,7 @@ At current the program is very rudimentary:
             1. Instance of `hueautotemp.lightCalc.LinCalc` is created at the start of each phase
             
             2. `LinCalc.linfunct` is called as an instace variable of the given phase. 
-            Recieves the current time (the independent value) as a timedelta vallue
+            Receives the current time (the independent value) as a timedelta value
             
             3. Garbage collector end of phase clears the LinCalc object out of memory
             
