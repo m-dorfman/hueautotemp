@@ -31,7 +31,7 @@ At current the program is very rudimentary:
             
             4. Repeat until program terminates(bedtime)
             
-            * Hue requires that we convert from kelvin to mire
+            * Hue requires that we convert from kelvin to mired
             https://en.wikipedia.org/wiki/Mired
 
 2.	Make the lights nice!
