@@ -17,7 +17,7 @@ The application constantly signals the Hue bridge by use of the Hue API. For thi
 
 At current the program is very rudimentary:
 
-1.	Simply use linear point approximations with known light temperatures of each phase(start temp and end temp are set) as a dependent values, and times input by user(wake time, length of the day, and how long sundown should be). Program generates simple linear function that can be cycled through its phase, checking the time and setting the according light temperature.
+1.	Simply use linear interpolation with known light temperatures of each phase(start temp and end temp are set) as a dependent values, and times input by user(wake time, length of the day, and how long sundown should be). Program generates simple linear function that can be cycled through its phase, checking the time and setting the according light temperature.
 
       Method of function call is class based: 
             
