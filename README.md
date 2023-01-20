@@ -9,7 +9,7 @@ As we can see, melanopsin can be partially responsible for the control of circad
 By adjusting the amount of blue/red light in cyclical/phasic fashion during the day, we can potentially manipulate our own circadian rhythm. This could be beneficial for anyone hoping to potentially more productive, or to maybe feel better. Those with seasonal depression may find great benefit from such a system.
 
 https://en.wikipedia.org/wiki/Melanopsin
-http://s3.amazonaws.com/academia.edu.documents/42833859/Panda_S._et_al._Melanopsin_Opn4_requir20160219-25833-1vm1a2f.pdf?AWSAccessKeyId=AKIAJ56TQJRTWSMTNPEA&Expires=1480642008&Signature=TyDbajhAcqepGK76sTWrANoJ3v4%3D&response-content-disposition=inline%3B%20filename%3DMelanopsin_Opn4_Requirement_for_Normal_L.pdf
+
 http://science.sciencemag.org/content/298/5601/2211
 
 The application constantly signals the Hue bridge by use of the Hue API. For this to work, something needs to be constantly running the program, and having a personal computer or cell phone do that is inconvenient since they are occasionally turned off. A good solution is to a buy a Raspberry Pi Zero for $5, pull out your light switch, and pop the Pi in its place. Raspberry Pi can be powered by the same wires that were being used by the power switch(don't forget to switch breakers off first).
