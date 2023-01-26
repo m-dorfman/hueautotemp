@@ -1,0 +1,1252 @@
+{
+  "version": "tree-0.1",
+  "tree": {
+    "id": "App",
+    "path": "",
+    "children": {
+      "AutohueAwsDeployStack": {
+        "id": "AutohueAwsDeployStack",
+        "path": "AutohueAwsDeployStack",
+        "children": {
+          "HueApiKeyParameter": {
+            "id": "HueApiKeyParameter",
+            "path": "AutohueAwsDeployStack/HueApiKeyParameter",
+            "children": {
+              "Resource": {
+                "id": "Resource",
+                "path": "AutohueAwsDeployStack/HueApiKeyParameter/Resource",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::SSM::Parameter",
+                  "aws:cdk:cloudformation:props": {
+                    "type": "String",
+                    "value": "xxxxxxxxxxxxxxx",
+                    "description": "Parameter for the Philips Hue API",
+                    "name": "hue-api-key"
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_ssm.CfnParameter",
+                  "version": "2.61.1"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.aws_ssm.StringParameter",
+              "version": "2.61.1"
+            }
+          },
+          "ModelBucket": {
+            "id": "ModelBucket",
+            "path": "AutohueAwsDeployStack/ModelBucket",
+            "children": {
+              "Resource": {
+                "id": "Resource",
+                "path": "AutohueAwsDeployStack/ModelBucket/Resource",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::S3::Bucket",
+                  "aws:cdk:cloudformation:props": {}
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_s3.CfnBucket",
+                  "version": "2.61.1"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.aws_s3.Bucket",
+              "version": "2.61.1"
+            }
+          },
+          "TemperatureCronRule": {
+            "id": "TemperatureCronRule",
+            "path": "AutohueAwsDeployStack/TemperatureCronRule",
+            "children": {
+              "Resource": {
+                "id": "Resource",
+                "path": "AutohueAwsDeployStack/TemperatureCronRule/Resource",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::Events::Rule",
+                  "aws:cdk:cloudformation:props": {
+                    "scheduleExpression": "cron(* 6-23 * * *)",
+                    "state": "ENABLED",
+                    "targets": [
+                      {
+                        "id": "Target0",
+                        "arn": {
+                          "Fn::GetAtt": [
+                            "TemperatureCycleFn472BB92C",
+                            "Arn"
+                          ]
+                        }
+                      }
+                    ]
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_events.CfnRule",
+                  "version": "2.61.1"
+                }
+              },
+              "AllowEventRuleAutohueAwsDeployStackTemperatureCycleFnF3609A8A": {
+                "id": "AllowEventRuleAutohueAwsDeployStackTemperatureCycleFnF3609A8A",
+                "path": "AutohueAwsDeployStack/TemperatureCronRule/AllowEventRuleAutohueAwsDeployStackTemperatureCycleFnF3609A8A",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::Lambda::Permission",
+                  "aws:cdk:cloudformation:props": {
+                    "action": "lambda:InvokeFunction",
+                    "functionName": {
+                      "Fn::GetAtt": [
+                        "TemperatureCycleFn472BB92C",
+                        "Arn"
+                      ]
+                    },
+                    "principal": "events.amazonaws.com",
+                    "sourceArn": {
+                      "Fn::GetAtt": [
+                        "TemperatureCronRule765D6CB8",
+                        "Arn"
+                      ]
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_lambda.CfnPermission",
+                  "version": "2.61.1"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.aws_events.Rule",
+              "version": "2.61.1"
+            }
+          },
+          "UpdaterFn": {
+            "id": "UpdaterFn",
+            "path": "AutohueAwsDeployStack/UpdaterFn",
+            "children": {
+              "ServiceRole": {
+                "id": "ServiceRole",
+                "path": "AutohueAwsDeployStack/UpdaterFn/ServiceRole",
+                "children": {
+                  "ImportServiceRole": {
+                    "id": "ImportServiceRole",
+                    "path": "AutohueAwsDeployStack/UpdaterFn/ServiceRole/ImportServiceRole",
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.Resource",
+                      "version": "2.61.1"
+                    }
+                  },
+                  "Resource": {
+                    "id": "Resource",
+                    "path": "AutohueAwsDeployStack/UpdaterFn/ServiceRole/Resource",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::IAM::Role",
+                      "aws:cdk:cloudformation:props": {
+                        "assumeRolePolicyDocument": {
+                          "Statement": [
+                            {
+                              "Action": "sts:AssumeRole",
+                              "Effect": "Allow",
+                              "Principal": {
+                                "Service": "lambda.amazonaws.com"
+                              }
+                            }
+                          ],
+                          "Version": "2012-10-17"
+                        },
+                        "managedPolicyArns": [
+                          {
+                            "Fn::Join": [
+                              "",
+                              [
+                                "arn:",
+                                {
+                                  "Ref": "AWS::Partition"
+                                },
+                                ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+                              ]
+                            ]
+                          }
+                        ]
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_iam.CfnRole",
+                      "version": "2.61.1"
+                    }
+                  },
+                  "DefaultPolicy": {
+                    "id": "DefaultPolicy",
+                    "path": "AutohueAwsDeployStack/UpdaterFn/ServiceRole/DefaultPolicy",
+                    "children": {
+                      "Resource": {
+                        "id": "Resource",
+                        "path": "AutohueAwsDeployStack/UpdaterFn/ServiceRole/DefaultPolicy/Resource",
+                        "attributes": {
+                          "aws:cdk:cloudformation:type": "AWS::IAM::Policy",
+                          "aws:cdk:cloudformation:props": {
+                            "policyDocument": {
+                              "Statement": [
+                                {
+                                  "Action": "ssm:GetParameter",
+                                  "Effect": "Allow",
+                                  "Resource": {
+                                    "Fn::Join": [
+                                      "",
+                                      [
+                                        "arn:",
+                                        {
+                                          "Ref": "AWS::Partition"
+                                        },
+                                        ":ssm:",
+                                        {
+                                          "Ref": "AWS::Region"
+                                        },
+                                        ":",
+                                        {
+                                          "Ref": "AWS::AccountId"
+                                        },
+                                        ":parameter/",
+                                        {
+                                          "Ref": "HueApiKeyParameter63E6D1AB"
+                                        }
+                                      ]
+                                    ]
+                                  }
+                                },
+                                {
+                                  "Action": [
+                                    "events:DisableRule",
+                                    "events:EnableRule"
+                                  ],
+                                  "Effect": "Allow",
+                                  "Resource": {
+                                    "Fn::GetAtt": [
+                                      "TemperatureCronRule765D6CB8",
+                                      "Arn"
+                                    ]
+                                  }
+                                }
+                              ],
+                              "Version": "2012-10-17"
+                            },
+                            "policyName": "UpdaterFnServiceRoleDefaultPolicyFAFC6867",
+                            "roles": [
+                              {
+                                "Ref": "UpdaterFnServiceRoleC60CD4CD"
+                              }
+                            ]
+                          }
+                        },
+                        "constructInfo": {
+                          "fqn": "aws-cdk-lib.aws_iam.CfnPolicy",
+                          "version": "2.61.1"
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_iam.Policy",
+                      "version": "2.61.1"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_iam.Role",
+                  "version": "2.61.1"
+                }
+              },
+              "Code": {
+                "id": "Code",
+                "path": "AutohueAwsDeployStack/UpdaterFn/Code",
+                "children": {
+                  "Stage": {
+                    "id": "Stage",
+                    "path": "AutohueAwsDeployStack/UpdaterFn/Code/Stage",
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.AssetStaging",
+                      "version": "2.61.1"
+                    }
+                  },
+                  "AssetBucket": {
+                    "id": "AssetBucket",
+                    "path": "AutohueAwsDeployStack/UpdaterFn/Code/AssetBucket",
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_s3.BucketBase",
+                      "version": "2.61.1"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_s3_assets.Asset",
+                  "version": "2.61.1"
+                }
+              },
+              "Resource": {
+                "id": "Resource",
+                "path": "AutohueAwsDeployStack/UpdaterFn/Resource",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::Lambda::Function",
+                  "aws:cdk:cloudformation:props": {
+                    "code": {
+                      "s3Bucket": {
+                        "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}"
+                      },
+                      "s3Key": "c8c488c3b95e7bfff3424beef15e9f0c94d05cdc53c9c9625108c22a6d39e7cf.zip"
+                    },
+                    "role": {
+                      "Fn::GetAtt": [
+                        "UpdaterFnServiceRoleC60CD4CD",
+                        "Arn"
+                      ]
+                    },
+                    "description": "Performs updating functions upon light actions",
+                    "environment": {
+                      "variables": {
+                        "API_KEY_SSM_PARAM": {
+                          "Ref": "HueApiKeyParameter63E6D1AB"
+                        },
+                        "ADDRESS": "address.com",
+                        "CRON_EVENT_NAME": {
+                          "Ref": "TemperatureCronRule765D6CB8"
+                        },
+                        "WRITE_QUEUE_NAME": ""
+                      }
+                    },
+                    "handler": "updaterFn.lambda_handler",
+                    "runtime": "python3.8"
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_lambda.CfnFunction",
+                  "version": "2.61.1"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.aws_lambda.Function",
+              "version": "2.61.1"
+            }
+          },
+          "TemperatureCycleFn": {
+            "id": "TemperatureCycleFn",
+            "path": "AutohueAwsDeployStack/TemperatureCycleFn",
+            "children": {
+              "ServiceRole": {
+                "id": "ServiceRole",
+                "path": "AutohueAwsDeployStack/TemperatureCycleFn/ServiceRole",
+                "children": {
+                  "ImportServiceRole": {
+                    "id": "ImportServiceRole",
+                    "path": "AutohueAwsDeployStack/TemperatureCycleFn/ServiceRole/ImportServiceRole",
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.Resource",
+                      "version": "2.61.1"
+                    }
+                  },
+                  "Resource": {
+                    "id": "Resource",
+                    "path": "AutohueAwsDeployStack/TemperatureCycleFn/ServiceRole/Resource",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::IAM::Role",
+                      "aws:cdk:cloudformation:props": {
+                        "assumeRolePolicyDocument": {
+                          "Statement": [
+                            {
+                              "Action": "sts:AssumeRole",
+                              "Effect": "Allow",
+                              "Principal": {
+                                "Service": "lambda.amazonaws.com"
+                              }
+                            }
+                          ],
+                          "Version": "2012-10-17"
+                        },
+                        "managedPolicyArns": [
+                          {
+                            "Fn::Join": [
+                              "",
+                              [
+                                "arn:",
+                                {
+                                  "Ref": "AWS::Partition"
+                                },
+                                ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+                              ]
+                            ]
+                          }
+                        ]
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_iam.CfnRole",
+                      "version": "2.61.1"
+                    }
+                  },
+                  "DefaultPolicy": {
+                    "id": "DefaultPolicy",
+                    "path": "AutohueAwsDeployStack/TemperatureCycleFn/ServiceRole/DefaultPolicy",
+                    "children": {
+                      "Resource": {
+                        "id": "Resource",
+                        "path": "AutohueAwsDeployStack/TemperatureCycleFn/ServiceRole/DefaultPolicy/Resource",
+                        "attributes": {
+                          "aws:cdk:cloudformation:type": "AWS::IAM::Policy",
+                          "aws:cdk:cloudformation:props": {
+                            "policyDocument": {
+                              "Statement": [
+                                {
+                                  "Action": "s3:GetObject",
+                                  "Effect": "Allow",
+                                  "Resource": {
+                                    "Fn::GetAtt": [
+                                      "ModelBucketB33D855B",
+                                      "Arn"
+                                    ]
+                                  }
+                                },
+                                {
+                                  "Action": "ssm:GetParameter",
+                                  "Effect": "Allow",
+                                  "Resource": {
+                                    "Fn::Join": [
+                                      "",
+                                      [
+                                        "arn:",
+                                        {
+                                          "Ref": "AWS::Partition"
+                                        },
+                                        ":ssm:",
+                                        {
+                                          "Ref": "AWS::Region"
+                                        },
+                                        ":",
+                                        {
+                                          "Ref": "AWS::AccountId"
+                                        },
+                                        ":parameter/",
+                                        {
+                                          "Ref": "HueApiKeyParameter63E6D1AB"
+                                        }
+                                      ]
+                                    ]
+                                  }
+                                }
+                              ],
+                              "Version": "2012-10-17"
+                            },
+                            "policyName": "TemperatureCycleFnServiceRoleDefaultPolicyC46130C4",
+                            "roles": [
+                              {
+                                "Ref": "TemperatureCycleFnServiceRoleD8A480BA"
+                              }
+                            ]
+                          }
+                        },
+                        "constructInfo": {
+                          "fqn": "aws-cdk-lib.aws_iam.CfnPolicy",
+                          "version": "2.61.1"
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_iam.Policy",
+                      "version": "2.61.1"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_iam.Role",
+                  "version": "2.61.1"
+                }
+              },
+              "Code": {
+                "id": "Code",
+                "path": "AutohueAwsDeployStack/TemperatureCycleFn/Code",
+                "children": {
+                  "Stage": {
+                    "id": "Stage",
+                    "path": "AutohueAwsDeployStack/TemperatureCycleFn/Code/Stage",
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.AssetStaging",
+                      "version": "2.61.1"
+                    }
+                  },
+                  "AssetBucket": {
+                    "id": "AssetBucket",
+                    "path": "AutohueAwsDeployStack/TemperatureCycleFn/Code/AssetBucket",
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_s3.BucketBase",
+                      "version": "2.61.1"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_s3_assets.Asset",
+                  "version": "2.61.1"
+                }
+              },
+              "Resource": {
+                "id": "Resource",
+                "path": "AutohueAwsDeployStack/TemperatureCycleFn/Resource",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::Lambda::Function",
+                  "aws:cdk:cloudformation:props": {
+                    "code": {
+                      "s3Bucket": {
+                        "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}"
+                      },
+                      "s3Key": "64652aec6644487500d466097a4f5cea6c46627a3c22aab7fa15557d6dab22ab.zip"
+                    },
+                    "role": {
+                      "Fn::GetAtt": [
+                        "TemperatureCycleFnServiceRoleD8A480BA",
+                        "Arn"
+                      ]
+                    },
+                    "description": "Sends request to Hue device(s) to set light temperature",
+                    "environment": {
+                      "variables": {
+                        "API_KEY_SSM_PARAM": {
+                          "Ref": "HueApiKeyParameter63E6D1AB"
+                        },
+                        "ADDRESS": "address.com",
+                        "MODEL_BUCKET_NAME": {
+                          "Ref": "ModelBucketB33D855B"
+                        },
+                        "MODEL_OBJECT_KEY": "",
+                        "LIGHT_GROUP": "light-group-identifier"
+                      }
+                    },
+                    "handler": "temperatureCycleFn.lambda_handler",
+                    "runtime": "python3.8"
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_lambda.CfnFunction",
+                  "version": "2.61.1"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.aws_lambda.Function",
+              "version": "2.61.1"
+            }
+          },
+          "ModelGeneratorFn": {
+            "id": "ModelGeneratorFn",
+            "path": "AutohueAwsDeployStack/ModelGeneratorFn",
+            "children": {
+              "ServiceRole": {
+                "id": "ServiceRole",
+                "path": "AutohueAwsDeployStack/ModelGeneratorFn/ServiceRole",
+                "children": {
+                  "ImportServiceRole": {
+                    "id": "ImportServiceRole",
+                    "path": "AutohueAwsDeployStack/ModelGeneratorFn/ServiceRole/ImportServiceRole",
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.Resource",
+                      "version": "2.61.1"
+                    }
+                  },
+                  "Resource": {
+                    "id": "Resource",
+                    "path": "AutohueAwsDeployStack/ModelGeneratorFn/ServiceRole/Resource",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::IAM::Role",
+                      "aws:cdk:cloudformation:props": {
+                        "assumeRolePolicyDocument": {
+                          "Statement": [
+                            {
+                              "Action": "sts:AssumeRole",
+                              "Effect": "Allow",
+                              "Principal": {
+                                "Service": "lambda.amazonaws.com"
+                              }
+                            }
+                          ],
+                          "Version": "2012-10-17"
+                        },
+                        "managedPolicyArns": [
+                          {
+                            "Fn::Join": [
+                              "",
+                              [
+                                "arn:",
+                                {
+                                  "Ref": "AWS::Partition"
+                                },
+                                ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+                              ]
+                            ]
+                          }
+                        ]
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_iam.CfnRole",
+                      "version": "2.61.1"
+                    }
+                  },
+                  "DefaultPolicy": {
+                    "id": "DefaultPolicy",
+                    "path": "AutohueAwsDeployStack/ModelGeneratorFn/ServiceRole/DefaultPolicy",
+                    "children": {
+                      "Resource": {
+                        "id": "Resource",
+                        "path": "AutohueAwsDeployStack/ModelGeneratorFn/ServiceRole/DefaultPolicy/Resource",
+                        "attributes": {
+                          "aws:cdk:cloudformation:type": "AWS::IAM::Policy",
+                          "aws:cdk:cloudformation:props": {
+                            "policyDocument": {
+                              "Statement": [
+                                {
+                                  "Action": "s3:PutObject",
+                                  "Effect": "Allow",
+                                  "Resource": {
+                                    "Fn::GetAtt": [
+                                      "ModelBucketB33D855B",
+                                      "Arn"
+                                    ]
+                                  }
+                                },
+                                {
+                                  "Action": "lambda:UpdateFunctionConfiguration",
+                                  "Effect": "Allow",
+                                  "Resource": {
+                                    "Fn::GetAtt": [
+                                      "TemperatureCycleFn472BB92C",
+                                      "Arn"
+                                    ]
+                                  }
+                                }
+                              ],
+                              "Version": "2012-10-17"
+                            },
+                            "policyName": "ModelGeneratorFnServiceRoleDefaultPolicy5A0C7E46",
+                            "roles": [
+                              {
+                                "Ref": "ModelGeneratorFnServiceRoleB641E34A"
+                              }
+                            ]
+                          }
+                        },
+                        "constructInfo": {
+                          "fqn": "aws-cdk-lib.aws_iam.CfnPolicy",
+                          "version": "2.61.1"
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_iam.Policy",
+                      "version": "2.61.1"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_iam.Role",
+                  "version": "2.61.1"
+                }
+              },
+              "Code": {
+                "id": "Code",
+                "path": "AutohueAwsDeployStack/ModelGeneratorFn/Code",
+                "children": {
+                  "Stage": {
+                    "id": "Stage",
+                    "path": "AutohueAwsDeployStack/ModelGeneratorFn/Code/Stage",
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.AssetStaging",
+                      "version": "2.61.1"
+                    }
+                  },
+                  "AssetBucket": {
+                    "id": "AssetBucket",
+                    "path": "AutohueAwsDeployStack/ModelGeneratorFn/Code/AssetBucket",
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_s3.BucketBase",
+                      "version": "2.61.1"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_s3_assets.Asset",
+                  "version": "2.61.1"
+                }
+              },
+              "Resource": {
+                "id": "Resource",
+                "path": "AutohueAwsDeployStack/ModelGeneratorFn/Resource",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::Lambda::Function",
+                  "aws:cdk:cloudformation:props": {
+                    "code": {
+                      "s3Bucket": {
+                        "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}"
+                      },
+                      "s3Key": "b11097d98e35e631ec0c2b3c89a31ef77372c1f4da38771fcfcd22e88685f6c6.zip"
+                    },
+                    "role": {
+                      "Fn::GetAtt": [
+                        "ModelGeneratorFnServiceRoleB641E34A",
+                        "Arn"
+                      ]
+                    },
+                    "description": "Generates a model and serializes it for the temperature cycle funct",
+                    "environment": {
+                      "variables": {
+                        "CALLER_FUNCTION_NAME": {
+                          "Ref": "TemperatureCycleFn472BB92C"
+                        },
+                        "MODEL_BUCKET_NAME": {
+                          "Ref": "ModelBucketB33D855B"
+                        },
+                        "MODEL_OBJECT_KEY_ENV_VAR": "MODEL_OBJECT_KEY"
+                      }
+                    },
+                    "handler": "modelGeneratorFn.lambda_handler",
+                    "runtime": "python3.8"
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_lambda.CfnFunction",
+                  "version": "2.61.1"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.aws_lambda.Function",
+              "version": "2.61.1"
+            }
+          },
+          "ServerlessLightsApi": {
+            "id": "ServerlessLightsApi",
+            "path": "AutohueAwsDeployStack/ServerlessLightsApi",
+            "children": {
+              "Resource": {
+                "id": "Resource",
+                "path": "AutohueAwsDeployStack/ServerlessLightsApi/Resource",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::ApiGateway::RestApi",
+                  "aws:cdk:cloudformation:props": {
+                    "name": "lightsApi"
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_apigateway.CfnRestApi",
+                  "version": "2.61.1"
+                }
+              },
+              "Deployment": {
+                "id": "Deployment",
+                "path": "AutohueAwsDeployStack/ServerlessLightsApi/Deployment",
+                "children": {
+                  "Resource": {
+                    "id": "Resource",
+                    "path": "AutohueAwsDeployStack/ServerlessLightsApi/Deployment/Resource",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::ApiGateway::Deployment",
+                      "aws:cdk:cloudformation:props": {
+                        "restApiId": {
+                          "Ref": "ServerlessLightsApi24B8AA8E"
+                        },
+                        "description": "Automatically created by the RestApi construct"
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_apigateway.CfnDeployment",
+                      "version": "2.61.1"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_apigateway.Deployment",
+                  "version": "2.61.1"
+                }
+              },
+              "DeploymentStage.prod": {
+                "id": "DeploymentStage.prod",
+                "path": "AutohueAwsDeployStack/ServerlessLightsApi/DeploymentStage.prod",
+                "children": {
+                  "Resource": {
+                    "id": "Resource",
+                    "path": "AutohueAwsDeployStack/ServerlessLightsApi/DeploymentStage.prod/Resource",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::ApiGateway::Stage",
+                      "aws:cdk:cloudformation:props": {
+                        "restApiId": {
+                          "Ref": "ServerlessLightsApi24B8AA8E"
+                        },
+                        "deploymentId": {
+                          "Ref": "ServerlessLightsApiDeployment99773CC835afef6d381c839b9ae7e2ce46fb91bf"
+                        },
+                        "stageName": "prod"
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_apigateway.CfnStage",
+                      "version": "2.61.1"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_apigateway.Stage",
+                  "version": "2.61.1"
+                }
+              },
+              "Endpoint": {
+                "id": "Endpoint",
+                "path": "AutohueAwsDeployStack/ServerlessLightsApi/Endpoint",
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.CfnOutput",
+                  "version": "2.61.1"
+                }
+              },
+              "Default": {
+                "id": "Default",
+                "path": "AutohueAwsDeployStack/ServerlessLightsApi/Default",
+                "children": {
+                  "updater": {
+                    "id": "updater",
+                    "path": "AutohueAwsDeployStack/ServerlessLightsApi/Default/updater",
+                    "children": {
+                      "Resource": {
+                        "id": "Resource",
+                        "path": "AutohueAwsDeployStack/ServerlessLightsApi/Default/updater/Resource",
+                        "attributes": {
+                          "aws:cdk:cloudformation:type": "AWS::ApiGateway::Resource",
+                          "aws:cdk:cloudformation:props": {
+                            "parentId": {
+                              "Fn::GetAtt": [
+                                "ServerlessLightsApi24B8AA8E",
+                                "RootResourceId"
+                              ]
+                            },
+                            "pathPart": "updater",
+                            "restApiId": {
+                              "Ref": "ServerlessLightsApi24B8AA8E"
+                            }
+                          }
+                        },
+                        "constructInfo": {
+                          "fqn": "aws-cdk-lib.aws_apigateway.CfnResource",
+                          "version": "2.61.1"
+                        }
+                      },
+                      "PUT": {
+                        "id": "PUT",
+                        "path": "AutohueAwsDeployStack/ServerlessLightsApi/Default/updater/PUT",
+                        "children": {
+                          "ApiPermission.AutohueAwsDeployStackServerlessLightsApi60F424BA.PUT..updater": {
+                            "id": "ApiPermission.AutohueAwsDeployStackServerlessLightsApi60F424BA.PUT..updater",
+                            "path": "AutohueAwsDeployStack/ServerlessLightsApi/Default/updater/PUT/ApiPermission.AutohueAwsDeployStackServerlessLightsApi60F424BA.PUT..updater",
+                            "attributes": {
+                              "aws:cdk:cloudformation:type": "AWS::Lambda::Permission",
+                              "aws:cdk:cloudformation:props": {
+                                "action": "lambda:InvokeFunction",
+                                "functionName": {
+                                  "Fn::GetAtt": [
+                                    "UpdaterFnA0DC6E06",
+                                    "Arn"
+                                  ]
+                                },
+                                "principal": "apigateway.amazonaws.com",
+                                "sourceArn": {
+                                  "Fn::Join": [
+                                    "",
+                                    [
+                                      "arn:",
+                                      {
+                                        "Ref": "AWS::Partition"
+                                      },
+                                      ":execute-api:",
+                                      {
+                                        "Ref": "AWS::Region"
+                                      },
+                                      ":",
+                                      {
+                                        "Ref": "AWS::AccountId"
+                                      },
+                                      ":",
+                                      {
+                                        "Ref": "ServerlessLightsApi24B8AA8E"
+                                      },
+                                      "/",
+                                      {
+                                        "Ref": "ServerlessLightsApiDeploymentStageprod01E45B87"
+                                      },
+                                      "/PUT/updater"
+                                    ]
+                                  ]
+                                }
+                              }
+                            },
+                            "constructInfo": {
+                              "fqn": "aws-cdk-lib.aws_lambda.CfnPermission",
+                              "version": "2.61.1"
+                            }
+                          },
+                          "ApiPermission.Test.AutohueAwsDeployStackServerlessLightsApi60F424BA.PUT..updater": {
+                            "id": "ApiPermission.Test.AutohueAwsDeployStackServerlessLightsApi60F424BA.PUT..updater",
+                            "path": "AutohueAwsDeployStack/ServerlessLightsApi/Default/updater/PUT/ApiPermission.Test.AutohueAwsDeployStackServerlessLightsApi60F424BA.PUT..updater",
+                            "attributes": {
+                              "aws:cdk:cloudformation:type": "AWS::Lambda::Permission",
+                              "aws:cdk:cloudformation:props": {
+                                "action": "lambda:InvokeFunction",
+                                "functionName": {
+                                  "Fn::GetAtt": [
+                                    "UpdaterFnA0DC6E06",
+                                    "Arn"
+                                  ]
+                                },
+                                "principal": "apigateway.amazonaws.com",
+                                "sourceArn": {
+                                  "Fn::Join": [
+                                    "",
+                                    [
+                                      "arn:",
+                                      {
+                                        "Ref": "AWS::Partition"
+                                      },
+                                      ":execute-api:",
+                                      {
+                                        "Ref": "AWS::Region"
+                                      },
+                                      ":",
+                                      {
+                                        "Ref": "AWS::AccountId"
+                                      },
+                                      ":",
+                                      {
+                                        "Ref": "ServerlessLightsApi24B8AA8E"
+                                      },
+                                      "/test-invoke-stage/PUT/updater"
+                                    ]
+                                  ]
+                                }
+                              }
+                            },
+                            "constructInfo": {
+                              "fqn": "aws-cdk-lib.aws_lambda.CfnPermission",
+                              "version": "2.61.1"
+                            }
+                          },
+                          "Resource": {
+                            "id": "Resource",
+                            "path": "AutohueAwsDeployStack/ServerlessLightsApi/Default/updater/PUT/Resource",
+                            "attributes": {
+                              "aws:cdk:cloudformation:type": "AWS::ApiGateway::Method",
+                              "aws:cdk:cloudformation:props": {
+                                "httpMethod": "PUT",
+                                "resourceId": {
+                                  "Ref": "ServerlessLightsApiupdaterF764EE7E"
+                                },
+                                "restApiId": {
+                                  "Ref": "ServerlessLightsApi24B8AA8E"
+                                },
+                                "authorizationType": "NONE",
+                                "integration": {
+                                  "type": "AWS_PROXY",
+                                  "uri": {
+                                    "Fn::Join": [
+                                      "",
+                                      [
+                                        "arn:",
+                                        {
+                                          "Ref": "AWS::Partition"
+                                        },
+                                        ":apigateway:",
+                                        {
+                                          "Ref": "AWS::Region"
+                                        },
+                                        ":lambda:path/2015-03-31/functions/",
+                                        {
+                                          "Fn::GetAtt": [
+                                            "UpdaterFnA0DC6E06",
+                                            "Arn"
+                                          ]
+                                        },
+                                        "/invocations"
+                                      ]
+                                    ]
+                                  },
+                                  "integrationHttpMethod": "POST"
+                                }
+                              }
+                            },
+                            "constructInfo": {
+                              "fqn": "aws-cdk-lib.aws_apigateway.CfnMethod",
+                              "version": "2.61.1"
+                            }
+                          }
+                        },
+                        "constructInfo": {
+                          "fqn": "aws-cdk-lib.aws_apigateway.Method",
+                          "version": "2.61.1"
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_apigateway.Resource",
+                      "version": "2.61.1"
+                    }
+                  },
+                  "modelGenerator": {
+                    "id": "modelGenerator",
+                    "path": "AutohueAwsDeployStack/ServerlessLightsApi/Default/modelGenerator",
+                    "children": {
+                      "Resource": {
+                        "id": "Resource",
+                        "path": "AutohueAwsDeployStack/ServerlessLightsApi/Default/modelGenerator/Resource",
+                        "attributes": {
+                          "aws:cdk:cloudformation:type": "AWS::ApiGateway::Resource",
+                          "aws:cdk:cloudformation:props": {
+                            "parentId": {
+                              "Fn::GetAtt": [
+                                "ServerlessLightsApi24B8AA8E",
+                                "RootResourceId"
+                              ]
+                            },
+                            "pathPart": "modelGenerator",
+                            "restApiId": {
+                              "Ref": "ServerlessLightsApi24B8AA8E"
+                            }
+                          }
+                        },
+                        "constructInfo": {
+                          "fqn": "aws-cdk-lib.aws_apigateway.CfnResource",
+                          "version": "2.61.1"
+                        }
+                      },
+                      "PUT": {
+                        "id": "PUT",
+                        "path": "AutohueAwsDeployStack/ServerlessLightsApi/Default/modelGenerator/PUT",
+                        "children": {
+                          "ApiPermission.AutohueAwsDeployStackServerlessLightsApi60F424BA.PUT..modelGenerator": {
+                            "id": "ApiPermission.AutohueAwsDeployStackServerlessLightsApi60F424BA.PUT..modelGenerator",
+                            "path": "AutohueAwsDeployStack/ServerlessLightsApi/Default/modelGenerator/PUT/ApiPermission.AutohueAwsDeployStackServerlessLightsApi60F424BA.PUT..modelGenerator",
+                            "attributes": {
+                              "aws:cdk:cloudformation:type": "AWS::Lambda::Permission",
+                              "aws:cdk:cloudformation:props": {
+                                "action": "lambda:InvokeFunction",
+                                "functionName": {
+                                  "Fn::GetAtt": [
+                                    "ModelGeneratorFnBD09BD82",
+                                    "Arn"
+                                  ]
+                                },
+                                "principal": "apigateway.amazonaws.com",
+                                "sourceArn": {
+                                  "Fn::Join": [
+                                    "",
+                                    [
+                                      "arn:",
+                                      {
+                                        "Ref": "AWS::Partition"
+                                      },
+                                      ":execute-api:",
+                                      {
+                                        "Ref": "AWS::Region"
+                                      },
+                                      ":",
+                                      {
+                                        "Ref": "AWS::AccountId"
+                                      },
+                                      ":",
+                                      {
+                                        "Ref": "ServerlessLightsApi24B8AA8E"
+                                      },
+                                      "/",
+                                      {
+                                        "Ref": "ServerlessLightsApiDeploymentStageprod01E45B87"
+                                      },
+                                      "/PUT/modelGenerator"
+                                    ]
+                                  ]
+                                }
+                              }
+                            },
+                            "constructInfo": {
+                              "fqn": "aws-cdk-lib.aws_lambda.CfnPermission",
+                              "version": "2.61.1"
+                            }
+                          },
+                          "ApiPermission.Test.AutohueAwsDeployStackServerlessLightsApi60F424BA.PUT..modelGenerator": {
+                            "id": "ApiPermission.Test.AutohueAwsDeployStackServerlessLightsApi60F424BA.PUT..modelGenerator",
+                            "path": "AutohueAwsDeployStack/ServerlessLightsApi/Default/modelGenerator/PUT/ApiPermission.Test.AutohueAwsDeployStackServerlessLightsApi60F424BA.PUT..modelGenerator",
+                            "attributes": {
+                              "aws:cdk:cloudformation:type": "AWS::Lambda::Permission",
+                              "aws:cdk:cloudformation:props": {
+                                "action": "lambda:InvokeFunction",
+                                "functionName": {
+                                  "Fn::GetAtt": [
+                                    "ModelGeneratorFnBD09BD82",
+                                    "Arn"
+                                  ]
+                                },
+                                "principal": "apigateway.amazonaws.com",
+                                "sourceArn": {
+                                  "Fn::Join": [
+                                    "",
+                                    [
+                                      "arn:",
+                                      {
+                                        "Ref": "AWS::Partition"
+                                      },
+                                      ":execute-api:",
+                                      {
+                                        "Ref": "AWS::Region"
+                                      },
+                                      ":",
+                                      {
+                                        "Ref": "AWS::AccountId"
+                                      },
+                                      ":",
+                                      {
+                                        "Ref": "ServerlessLightsApi24B8AA8E"
+                                      },
+                                      "/test-invoke-stage/PUT/modelGenerator"
+                                    ]
+                                  ]
+                                }
+                              }
+                            },
+                            "constructInfo": {
+                              "fqn": "aws-cdk-lib.aws_lambda.CfnPermission",
+                              "version": "2.61.1"
+                            }
+                          },
+                          "Resource": {
+                            "id": "Resource",
+                            "path": "AutohueAwsDeployStack/ServerlessLightsApi/Default/modelGenerator/PUT/Resource",
+                            "attributes": {
+                              "aws:cdk:cloudformation:type": "AWS::ApiGateway::Method",
+                              "aws:cdk:cloudformation:props": {
+                                "httpMethod": "PUT",
+                                "resourceId": {
+                                  "Ref": "ServerlessLightsApimodelGenerator4749434B"
+                                },
+                                "restApiId": {
+                                  "Ref": "ServerlessLightsApi24B8AA8E"
+                                },
+                                "authorizationType": "NONE",
+                                "integration": {
+                                  "type": "AWS_PROXY",
+                                  "uri": {
+                                    "Fn::Join": [
+                                      "",
+                                      [
+                                        "arn:",
+                                        {
+                                          "Ref": "AWS::Partition"
+                                        },
+                                        ":apigateway:",
+                                        {
+                                          "Ref": "AWS::Region"
+                                        },
+                                        ":lambda:path/2015-03-31/functions/",
+                                        {
+                                          "Fn::GetAtt": [
+                                            "ModelGeneratorFnBD09BD82",
+                                            "Arn"
+                                          ]
+                                        },
+                                        "/invocations"
+                                      ]
+                                    ]
+                                  },
+                                  "integrationHttpMethod": "POST"
+                                }
+                              }
+                            },
+                            "constructInfo": {
+                              "fqn": "aws-cdk-lib.aws_apigateway.CfnMethod",
+                              "version": "2.61.1"
+                            }
+                          }
+                        },
+                        "constructInfo": {
+                          "fqn": "aws-cdk-lib.aws_apigateway.Method",
+                          "version": "2.61.1"
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_apigateway.Resource",
+                      "version": "2.61.1"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_apigateway.ResourceBase",
+                  "version": "2.61.1"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.aws_apigateway.RestApi",
+              "version": "2.61.1"
+            }
+          },
+          "CDKMetadata": {
+            "id": "CDKMetadata",
+            "path": "AutohueAwsDeployStack/CDKMetadata",
+            "children": {
+              "Default": {
+                "id": "Default",
+                "path": "AutohueAwsDeployStack/CDKMetadata/Default",
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.CfnResource",
+                  "version": "2.61.1"
+                }
+              },
+              "Condition": {
+                "id": "Condition",
+                "path": "AutohueAwsDeployStack/CDKMetadata/Condition",
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.CfnCondition",
+                  "version": "2.61.1"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "constructs.Construct",
+              "version": "10.1.229"
+            }
+          },
+          "BootstrapVersion": {
+            "id": "BootstrapVersion",
+            "path": "AutohueAwsDeployStack/BootstrapVersion",
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.CfnParameter",
+              "version": "2.61.1"
+            }
+          },
+          "CheckBootstrapVersion": {
+            "id": "CheckBootstrapVersion",
+            "path": "AutohueAwsDeployStack/CheckBootstrapVersion",
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.CfnRule",
+              "version": "2.61.1"
+            }
+          }
+        },
+        "constructInfo": {
+          "fqn": "aws-cdk-lib.Stack",
+          "version": "2.61.1"
+        }
+      },
+      "Tree": {
+        "id": "Tree",
+        "path": "Tree",
+        "constructInfo": {
+          "fqn": "constructs.Construct",
+          "version": "10.1.229"
+        }
+      }
+    },
+    "constructInfo": {
+      "fqn": "aws-cdk-lib.App",
+      "version": "2.61.1"
+    }
+  }
+}

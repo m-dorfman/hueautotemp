@@ -1,0 +1,220 @@
+{
+  "version": "29.0.0",
+  "artifacts": {
+    "AutohueAwsDeployStack.assets": {
+      "type": "cdk:asset-manifest",
+      "properties": {
+        "file": "AutohueAwsDeployStack.assets.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+      }
+    },
+    "AutohueAwsDeployStack": {
+      "type": "aws:cloudformation:stack",
+      "environment": "aws://unknown-account/unknown-region",
+      "properties": {
+        "templateFile": "AutohueAwsDeployStack.template.json",
+        "validateOnSynth": false,
+        "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
+        "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/eb5fde9577912474744670bd6839a65feb03fde089066fea053c538128627aaa.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
+        "additionalDependencies": [
+          "AutohueAwsDeployStack.assets"
+        ],
+        "lookupRole": {
+          "arn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-lookup-role-${AWS::AccountId}-${AWS::Region}",
+          "requiresBootstrapStackVersion": 8,
+          "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+        }
+      },
+      "dependencies": [
+        "AutohueAwsDeployStack.assets"
+      ],
+      "metadata": {
+        "/AutohueAwsDeployStack/HueApiKeyParameter/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "HueApiKeyParameter63E6D1AB"
+          }
+        ],
+        "/AutohueAwsDeployStack/ModelBucket/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ModelBucketB33D855B"
+          }
+        ],
+        "/AutohueAwsDeployStack/TemperatureCronRule/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "TemperatureCronRule765D6CB8"
+          }
+        ],
+        "/AutohueAwsDeployStack/TemperatureCronRule/AllowEventRuleAutohueAwsDeployStackTemperatureCycleFnF3609A8A": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "TemperatureCronRuleAllowEventRuleAutohueAwsDeployStackTemperatureCycleFnF3609A8A32EE29AA"
+          }
+        ],
+        "/AutohueAwsDeployStack/UpdaterFn/ServiceRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "UpdaterFnServiceRoleC60CD4CD"
+          }
+        ],
+        "/AutohueAwsDeployStack/UpdaterFn/ServiceRole/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "UpdaterFnServiceRoleDefaultPolicyFAFC6867"
+          }
+        ],
+        "/AutohueAwsDeployStack/UpdaterFn/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "UpdaterFnA0DC6E06"
+          }
+        ],
+        "/AutohueAwsDeployStack/TemperatureCycleFn/ServiceRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "TemperatureCycleFnServiceRoleD8A480BA"
+          }
+        ],
+        "/AutohueAwsDeployStack/TemperatureCycleFn/ServiceRole/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "TemperatureCycleFnServiceRoleDefaultPolicyC46130C4"
+          }
+        ],
+        "/AutohueAwsDeployStack/TemperatureCycleFn/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "TemperatureCycleFn472BB92C"
+          }
+        ],
+        "/AutohueAwsDeployStack/ModelGeneratorFn/ServiceRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ModelGeneratorFnServiceRoleB641E34A"
+          }
+        ],
+        "/AutohueAwsDeployStack/ModelGeneratorFn/ServiceRole/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ModelGeneratorFnServiceRoleDefaultPolicy5A0C7E46"
+          }
+        ],
+        "/AutohueAwsDeployStack/ModelGeneratorFn/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ModelGeneratorFnBD09BD82"
+          }
+        ],
+        "/AutohueAwsDeployStack/ServerlessLightsApi/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ServerlessLightsApi24B8AA8E"
+          }
+        ],
+        "/AutohueAwsDeployStack/ServerlessLightsApi/Deployment/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ServerlessLightsApiDeployment99773CC835afef6d381c839b9ae7e2ce46fb91bf"
+          }
+        ],
+        "/AutohueAwsDeployStack/ServerlessLightsApi/DeploymentStage.prod/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ServerlessLightsApiDeploymentStageprod01E45B87"
+          }
+        ],
+        "/AutohueAwsDeployStack/ServerlessLightsApi/Endpoint": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ServerlessLightsApiEndpoint6F058795"
+          }
+        ],
+        "/AutohueAwsDeployStack/ServerlessLightsApi/Default/updater/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ServerlessLightsApiupdaterF764EE7E"
+          }
+        ],
+        "/AutohueAwsDeployStack/ServerlessLightsApi/Default/updater/PUT/ApiPermission.AutohueAwsDeployStackServerlessLightsApi60F424BA.PUT..updater": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ServerlessLightsApiupdaterPUTApiPermissionAutohueAwsDeployStackServerlessLightsApi60F424BAPUTupdater04952E9E"
+          }
+        ],
+        "/AutohueAwsDeployStack/ServerlessLightsApi/Default/updater/PUT/ApiPermission.Test.AutohueAwsDeployStackServerlessLightsApi60F424BA.PUT..updater": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ServerlessLightsApiupdaterPUTApiPermissionTestAutohueAwsDeployStackServerlessLightsApi60F424BAPUTupdaterFCF7EC58"
+          }
+        ],
+        "/AutohueAwsDeployStack/ServerlessLightsApi/Default/updater/PUT/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ServerlessLightsApiupdaterPUTBAEBA669"
+          }
+        ],
+        "/AutohueAwsDeployStack/ServerlessLightsApi/Default/modelGenerator/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ServerlessLightsApimodelGenerator4749434B"
+          }
+        ],
+        "/AutohueAwsDeployStack/ServerlessLightsApi/Default/modelGenerator/PUT/ApiPermission.AutohueAwsDeployStackServerlessLightsApi60F424BA.PUT..modelGenerator": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ServerlessLightsApimodelGeneratorPUTApiPermissionAutohueAwsDeployStackServerlessLightsApi60F424BAPUTmodelGeneratorEF50764E"
+          }
+        ],
+        "/AutohueAwsDeployStack/ServerlessLightsApi/Default/modelGenerator/PUT/ApiPermission.Test.AutohueAwsDeployStackServerlessLightsApi60F424BA.PUT..modelGenerator": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ServerlessLightsApimodelGeneratorPUTApiPermissionTestAutohueAwsDeployStackServerlessLightsApi60F424BAPUTmodelGenerator3B249268"
+          }
+        ],
+        "/AutohueAwsDeployStack/ServerlessLightsApi/Default/modelGenerator/PUT/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ServerlessLightsApimodelGeneratorPUT75E53AC4"
+          }
+        ],
+        "/AutohueAwsDeployStack/CDKMetadata/Default": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CDKMetadata"
+          }
+        ],
+        "/AutohueAwsDeployStack/CDKMetadata/Condition": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CDKMetadataAvailable"
+          }
+        ],
+        "/AutohueAwsDeployStack/BootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BootstrapVersion"
+          }
+        ],
+        "/AutohueAwsDeployStack/CheckBootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CheckBootstrapVersion"
+          }
+        ]
+      },
+      "displayName": "AutohueAwsDeployStack"
+    },
+    "Tree": {
+      "type": "cdk:tree",
+      "properties": {
+        "file": "tree.json"
+      }
+    }
+  }
+}
