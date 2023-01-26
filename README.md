@@ -1,6 +1,7 @@
 # hueautotemp
 Automation of Philips Hue eco to help adjust circadian rhythm.
 
+`autohue_aws_deploy` is the AWS deployment variant. All other subdirectories are either WIP or outdated.
 
 Melanopsin(subfamily of the Opsin proteins) is a photosensitive protein found in mammalian retina. When light contacts the human eyes, melonopsin reacts according to the presence of blue light, with peak light absorption at 480nm. As light absorption of melonopsin is increased, a negative correlative relationship with melatonin is exhibited. In other words: the closer we get to 480nm blue light, the brain releases less melatonin, while a decrease from 480nm increases the release of melatonin in the mammalian brain.
 
