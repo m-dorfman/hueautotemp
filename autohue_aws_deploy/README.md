@@ -50,7 +50,7 @@ value will still be hit. This is important as we want daytime light during the d
 ## Architecture
 In order to make this work the following happens:
 
-<img src="diagram.svg" alt="drawing" width="400"/>
+<img src="diagram.svg" alt="drawing" width="600"/>
 
 ### <span style="color:#f2f791">Core functionality</span>
 The yellow region defines core functionality with the following functions:
