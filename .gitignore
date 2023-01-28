@@ -135,3 +135,7 @@ GitHub.sublime-settings
 !.vscode/launch.json 
 !.vscode/extensions.json 
 .history
+
+autohue_aws_deploy/node_modules
+autohue_aws_deploy/*/*.js
+autohue_aws_deplou/*/*.d.ts

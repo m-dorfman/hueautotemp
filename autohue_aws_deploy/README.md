@@ -8,16 +8,16 @@ cost and latency analysis below). The lambda functions are Python and the infras
 TypeScript.
 
 ## How to deploy
-This project has no dependencies to AWS and can be deployed with normal CDK commands.
+This is a standalone app and can be deployed using normal CDK commands:
 
 in `cdk.json` the following context variables are set:
 
-| Name         | Function                                                                          |
-|--------------|-----------------------------------------------------------------------------------|
-| `hueAddress` | Address of the Bridge to forward control requests                                 |
-| `hueApiKey`  | Authentication key distributed by the Bridge                                      |
-| `lightGroup` | Identifier representing a group of lights recognized by the bridge                |
-| `lambdaFunctions`       | Object contraining functions to deploy with optional function for data collection |
+| Key               | Function                                                                          |
+|-------------------|-----------------------------------------------------------------------------------|
+| `hueAddress`      | Address of the Bridge to forward control requests                                 |
+| `hueApiKey`       | Authentication key distributed by the Bridge                                      |
+| `lightGroup`      | Identifier representing a group of lights recognized by the bridge                |
+| `lambdaFunctions` | Object contraining functions to deploy with optional function for data collection |
 
 Including `dbWriteFn` in the `lambdaFunction` object sets a flag in the main stack to deploy the data collection
 function and associated components.
