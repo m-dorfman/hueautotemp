@@ -50,7 +50,7 @@ value will still be hit. This is important as we want daytime light during the d
 ## Architecture
 In order to make this work the following happens:
 
-<img src="diagram.svg" alt="drawing" width="400"/>
+<img src="diagram.svg" alt="drawing" width="600"/>
 
 ### <span style="color:#f2f791">Core functionality</span>
 The yellow region defines core functionality with the following functions:
@@ -82,9 +82,10 @@ TODO: implement error handling and notification
 ### <span style="color:#91baf7">Auxiliary data pipeline</span>
 Blue represent an optional data pipeline
 
-The UpdaterFn from will send action and time to an SQS queue. A DB writer function will parse the message and 
-insert into a table on a Postgres RDS instance. If the function fails to write messages older than an hour
-an SNS notification will be sent out.
+The UpdaterFn sends a message containing action and time to an SQS queue. A DB writer function will parse the message and 
+insert into a table on a Postgres RDS instance. The function is invoked by SQS and will pull all available messages from the queue.
+If the function fails to write messages the message will remain in the queue.
+If messages older than an hour are read, an SNS notification will be sent out.
 
 ## Cost and Timing Analysis
 This was written recently and I have yet to test.
