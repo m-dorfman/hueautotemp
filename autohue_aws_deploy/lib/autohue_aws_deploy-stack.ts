@@ -7,6 +7,7 @@ import { TemplateConfig } from "./template-configs";
 import { aws_sqs as sqs } from "aws-cdk-lib";
 import { aws_apigateway as api} from "aws-cdk-lib";
 import * as functions from "./functions";
+import {ServicePrincipal} from "aws-cdk-lib/aws-iam";
 
 export class AutohueAwsDeployStack extends cdk.Stack {
   constructor(scope: Construct, id: string, templateConfig: TemplateConfig, props?: cdk.StackProps) {
@@ -31,21 +32,30 @@ export class AutohueAwsDeployStack extends cdk.Stack {
         modelBucket, templateConfig.hueAddress, hueApiKeyParam,
         templateConfig.lightGroup, cronRule);
 
+    // create the api
     const lightsApi = new api.RestApi(this, 'ServerlessLightsApi', {
       restApiName: `lightsApi`
-    })
-
+    });
+    // separate resources and methods for each function that needs the api
     const updaterApiResource = lightsApi.root.addResource('updater');
     updaterApiResource.addMethod('PUT',
         new api.LambdaIntegration(updaterFn), {
           //apiKeyRequired: true,
         });
-
     const modelGeneratorApiResource = lightsApi.root.addResource('modelGenerator');
     modelGeneratorApiResource.addMethod('PUT',
         new api.LambdaIntegration(modelGeneratorFn), {
           //apiKeyRequired: true
-        })
+        });
+    // permissions for the api to invoke functions
+    updaterFn.addPermission('PermitUpdaterFnInvocation', {
+      principal: new ServicePrincipal('apigateway.amazonaws.com'),
+      sourceArn: lightsApi.arnForExecuteApi('*'),
+    });
+    modelGeneratorFn.addPermission('PermitModelGeneratorFnInvocation', {
+      principal: new ServicePrincipal('apigateway.amazonaws.com'),
+      sourceArn: lightsApi.arnForExecuteApi('*'),
+    });
   }
 
   private createFunctions(
