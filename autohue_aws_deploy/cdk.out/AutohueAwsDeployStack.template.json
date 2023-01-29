@@ -198,6 +198,46 @@
     "aws:asset:property": "Code"
    }
   },
+  "UpdaterFnPermitUpdaterFnInvocationA85DB069": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "UpdaterFnA0DC6E06",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:",
+       {
+        "Ref": "AWS::Partition"
+       },
+       ":execute-api:",
+       {
+        "Ref": "AWS::Region"
+       },
+       ":",
+       {
+        "Ref": "AWS::AccountId"
+       },
+       ":",
+       {
+        "Ref": "ServerlessLightsApi24B8AA8E"
+       },
+       "/*/*/*"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "AutohueAwsDeployStack/UpdaterFn/PermitUpdaterFnInvocation"
+   }
+  },
   "TemperatureCycleFnServiceRoleD8A480BA": {
    "Type": "AWS::IAM::Role",
    "Properties": {
@@ -408,10 +448,9 @@
    "Type": "AWS::Lambda::Function",
    "Properties": {
     "Code": {
-     "S3Bucket": {
-      "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}"
-     },
-     "S3Key": "b11097d98e35e631ec0c2b3c89a31ef77372c1f4da38771fcfcd22e88685f6c6.zip"
+     "ImageUri": {
+      "Fn::Sub": "${AWS::AccountId}.dkr.ecr.${AWS::Region}.${AWS::URLSuffix}/cdk-hnb659fds-container-assets-${AWS::AccountId}-${AWS::Region}:380b8a06416cde52b38ae844b0e09c58d4591574c6c7df3e20ebf791c220f596"
+     }
     },
     "Role": {
      "Fn::GetAtt": [
@@ -419,20 +458,7 @@
       "Arn"
      ]
     },
-    "Description": "Generates a model and serializes it for the temperature cycle funct",
-    "Environment": {
-     "Variables": {
-      "CALLER_FUNCTION_NAME": {
-       "Ref": "TemperatureCycleFn472BB92C"
-      },
-      "MODEL_BUCKET_NAME": {
-       "Ref": "ModelBucketB33D855B"
-      },
-      "MODEL_OBJECT_KEY_ENV_VAR": "MODEL_OBJECT_KEY"
-     }
-    },
-    "Handler": "modelGeneratorFn.lambda_handler",
-    "Runtime": "python3.8"
+    "PackageType": "Image"
    },
    "DependsOn": [
     "ModelGeneratorFnServiceRoleDefaultPolicy5A0C7E46",
@@ -440,9 +466,49 @@
    ],
    "Metadata": {
     "aws:cdk:path": "AutohueAwsDeployStack/ModelGeneratorFn/Resource",
-    "aws:asset:path": "asset.b11097d98e35e631ec0c2b3c89a31ef77372c1f4da38771fcfcd22e88685f6c6",
-    "aws:asset:is-bundled": false,
-    "aws:asset:property": "Code"
+    "aws:asset:path": "asset.380b8a06416cde52b38ae844b0e09c58d4591574c6c7df3e20ebf791c220f596",
+    "aws:asset:dockerfile-path": "Dockerfile",
+    "aws:asset:property": "Code.ImageUri"
+   }
+  },
+  "ModelGeneratorFnPermitModelGeneratorFnInvocationE814059D": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "ModelGeneratorFnBD09BD82",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:",
+       {
+        "Ref": "AWS::Partition"
+       },
+       ":execute-api:",
+       {
+        "Ref": "AWS::Region"
+       },
+       ":",
+       {
+        "Ref": "AWS::AccountId"
+       },
+       ":",
+       {
+        "Ref": "ServerlessLightsApi24B8AA8E"
+       },
+       "/*/*/*"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "AutohueAwsDeployStack/ModelGeneratorFn/PermitModelGeneratorFnInvocation"
    }
   },
   "ServerlessLightsApi24B8AA8E": {
@@ -780,7 +846,7 @@
   "CDKMetadata": {
    "Type": "AWS::CDK::Metadata",
    "Properties": {
-    "Analytics": "v2:deflate64:H4sIAAAAAAAA/1WQ207DMAyGn2X3WaCAkLjcQdwhpvIAU5aa4rVJqjjZVFV5d+KmDLj6Pzs+/M6DfK5ktVJXWuumW/d4ktNHULoTOXWciAzHHm17UF4ZCODF7tPegiToUU7bqDsI/LBQka0iSAIuYAPJqY49cAlrEr0yp0bJiYeBN0iEzorXaHVgyOkfTgJVdlG7pZ314HrU4+xkJrZxVESQF21YhBqwVQGuasytQGEz4Ny94B6G3o0mO+Psnygf3857CuR6F70GPuUWLIMKv0H4cg2nCqX0Wzdb4UH5/7jiPYYhhn/tmXfONlguta4Beaa7S/Uin+T96kyIax9tQAOyLvoNq1oyL7MBAAA="
+    "Analytics": "v2:deflate64:H4sIAAAAAAAA/1VRXU/DMAz8LXvPAgOExOM+hMQDYio/YPJS03lrkipONlVV/ztx243xdOezc74kT/p1oRczuPDclKd5TXvdfUcwJ5WlXcdspQ7kqi0EsBgxqPWPuxW94mfdrZI5YZTGxEZYAWOv8Iwusu6KVKOMCPaqBrsvQXdihsESM3mn3pMzUUiWb3zjs1n4sFDhVesVQU5W+MlScOtrMu2QbmASbQfMmJcvBRSacBXuPG89XWDjmaIPrSRX0FAFES/Q5k3IcdnQsGyiG2xq39p8OVHvqvx+1RBrJHnep2Bw8LwWk9HIPzEefCnSyPr+b25IJ0b5C2TiK8UmxX/HM197V9L4MM6XqI/8cF686Rf9ODsy0TwkF8miLkb8BXNilSb2AQAA"
    },
    "Metadata": {
     "aws:cdk:path": "AutohueAwsDeployStack/CDKMetadata/Default"

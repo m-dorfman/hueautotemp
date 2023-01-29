@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 import 'source-map-support/register';
 import * as cdk from 'aws-cdk-lib';
-import { AutohueAwsDeployStack } from '../lib/autohue_aws_deploy-stack';
+import { AutoHueAwsDeployStack } from '../lib/autohue_aws_deploy-stack';
 import { TemplateConfig } from "../lib/template-configs";
 import { getRequiredContext } from "../lib/utils";
 import {Construct} from "constructs";
@@ -18,4 +18,4 @@ const templateConfig : TemplateConfig ={
 
 console.log(templateConfig)
 
-new AutohueAwsDeployStack(app, 'AutohueAwsDeployStack', templateConfig);
+new AutoHueAwsDeployStack(app, 'AutohueAwsDeployStack', templateConfig);

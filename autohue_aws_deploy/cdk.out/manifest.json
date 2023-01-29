@@ -17,7 +17,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/eb5fde9577912474744670bd6839a65feb03fde089066fea053c538128627aaa.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/54b40f2c272ba11a012d7964d4cc5358f117cfa3a3d59679dbde1df18efe4e51.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -75,6 +75,12 @@
             "data": "UpdaterFnA0DC6E06"
           }
         ],
+        "/AutohueAwsDeployStack/UpdaterFn/PermitUpdaterFnInvocation": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "UpdaterFnPermitUpdaterFnInvocationA85DB069"
+          }
+        ],
         "/AutohueAwsDeployStack/TemperatureCycleFn/ServiceRole/Resource": [
           {
             "type": "aws:cdk:logicalId",
@@ -109,6 +115,12 @@
           {
             "type": "aws:cdk:logicalId",
             "data": "ModelGeneratorFnBD09BD82"
+          }
+        ],
+        "/AutohueAwsDeployStack/ModelGeneratorFn/PermitModelGeneratorFnInvocation": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ModelGeneratorFnPermitModelGeneratorFnInvocationE814059D"
           }
         ],
         "/AutohueAwsDeployStack/ServerlessLightsApi/Resource": [

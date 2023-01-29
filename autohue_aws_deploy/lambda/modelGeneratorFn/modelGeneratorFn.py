@@ -41,3 +41,9 @@ def lambda_handler(event, context):
         # TODO add the return
     else:
         raise ValueError(f'Unrecognized operation "{operation}"')
+
+
+if __name__ == "__main__":
+    os.environ['CALLER_FUCTION_NAME'] = 'caller_function'
+    os.environ['MODEL_BUCKET_NAME'] = 'model_bucket'
+    os.environ['MODEL_OBJECT_KEY_ENV_VAR'] = 'object_key'

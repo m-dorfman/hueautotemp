@@ -132,3 +132,4 @@ GitHub.sublime-settings
 autohue_aws_deploy/node_modules
 autohue_aws_deploy/*/*.js
 autohue_aws_deplou/*/*.d.ts
+autohue_aws_deploy/cdk.out/asset*

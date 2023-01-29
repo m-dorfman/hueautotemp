@@ -9,7 +9,7 @@ import { aws_apigateway as api} from "aws-cdk-lib";
 import * as functions from "./functions";
 import {ServicePrincipal} from "aws-cdk-lib/aws-iam";
 
-export class AutohueAwsDeployStack extends cdk.Stack {
+export class AutoHueAwsDeployStack extends cdk.Stack {
   constructor(scope: Construct, id: string, templateConfig: TemplateConfig, props?: cdk.StackProps) {
     super(scope, id, props);
 

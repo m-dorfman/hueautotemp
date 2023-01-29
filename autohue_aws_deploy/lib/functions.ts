@@ -6,8 +6,9 @@ import { aws_s3 as s3} from "aws-cdk-lib";
 import { aws_ssm as ssm } from "aws-cdk-lib";
 import { aws_events_targets as targets } from "aws-cdk-lib";
 import { aws_events as events } from "aws-cdk-lib";
-import {Construct} from "constructs";
-import {getLambdaCodePath} from './utils'
+import { Construct } from "constructs";
+import { getLambdaCodePath } from './utils'
+import { Architecture} from "aws-cdk-lib/aws-lambda";
 
 export interface WebParams {
   address: string,
@@ -18,17 +19,19 @@ export function createModelGeneratorFn(
     scope: Construct, temperatureCycleFn: lambda.Function,
     modelGeneratorFnModuleName: string, modelBucket: s3.Bucket,
 ) {
-  const modelGeneratorFn = new lambda.Function(scope, 'ModelGeneratorFn', {
+  const modelGeneratorFn = new lambda.DockerImageFunction(scope, 'ModelGeneratorFn', {
     description: 'Generates a model and serializes it for the temperature cycle funct',
-    runtime: lambda.Runtime.PYTHON_3_8,
-    handler: `${modelGeneratorFnModuleName}.lambda_handler`,
-    code: lambda.Code.fromAsset(getLambdaCodePath(modelGeneratorFnModuleName)),
+    code: lambda.DockerImageCode.fromImageAsset(
+        getLambdaCodePath(modelGeneratorFnModuleName)
+    ),
     environment: {
       "CALLER_FUNCTION_NAME": temperatureCycleFn.functionName,
       "MODEL_BUCKET_NAME": modelBucket.bucketName,
-      "MODEL_OBJECT_KEY_ENV_VAR": "MODEL_OBJECT_KEY", // this is the env var key from the temperature fn
+      // this is the env var key from the temperature fn
+      "MODEL_OBJECT_KEY_ENV_VAR": "MODEL_OBJECT_KEY",
     },
-  });
+    architecture: lambda.Architecture.ARM_64,
+  })
 
  modelGeneratorFn.addToRolePolicy(new iam.PolicyStatement({
    actions: ['s3:PutObject',],
@@ -59,6 +62,7 @@ export function createTemperatureCycleFn(
       "MODEL_OBJECT_KEY": '',
       "LIGHT_GROUP": lightGroup,
     },
+    architecture: lambda.Architecture.ARM_64,
   });
 
   cronTriggerEvent.addTarget(new targets.LambdaFunction(temperatureCycleFn));
@@ -91,6 +95,7 @@ export function createUpdaterFn(
       "ADDRESS": webParams.address,
       "CRON_EVENT_NAME": cronTriggerEvent.ruleName,
     },
+    architecture: lambda.Architecture.ARM_64,
   });
   if (typeof writeQueue !== 'undefined') {
     updaterFn.addEnvironment("WRITE_QUEUE_NAME", writeQueue.queueName);
