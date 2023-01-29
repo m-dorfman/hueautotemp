@@ -1,7 +1,9 @@
 # hueautotemp
 Automation of Philips Hue eco to help adjust circadian rhythm.
 
-`autohue_aws_deploy` is the AWS deployment variant. All other subdirectories are either WIP or outdated.
+`autohue_aws_deploy` is the AWS deployment variant. 
+
+Other branches in this project are to deploy on RPI and developing a django app to interact with.
 
 Melanopsin(subfamily of the Opsin proteins) is a photosensitive protein found in mammalian retina. When light contacts the human eyes, melonopsin reacts according to the presence of blue light, with peak light absorption at 480nm. As light absorption of melonopsin is increased, a negative correlative relationship with melatonin is exhibited. In other words: the closer we get to 480nm blue light, the brain releases less melatonin, while a decrease from 480nm increases the release of melatonin in the mammalian brain.
 
@@ -13,73 +15,5 @@ https://en.wikipedia.org/wiki/Melanopsin
 
 http://science.sciencemag.org/content/298/5601/2211
 
-The application constantly signals the Hue bridge by use of the Hue API. For this to work, something needs to be constantly running the program, and having a personal computer or cell phone do that is inconvenient since they are occasionally turned off. A good solution is to a buy a Raspberry Pi Zero for $5, pull out your light switch, and pop the Pi in its place. Raspberry Pi can be powered by the same wires that were being used by the power switch(don't forget to switch breakers off first).
 
 
-At current the program is very rudimentary:
-
-1.	Simply use linear interpolation with known light temperatures of each phase(start temp and end temp are set) as a dependent values, and times input by user(wake time, length of the day, and how long sundown should be). Program generates simple linear function that can be cycled through its phase, checking the time and setting the according light temperature.
-
-      Method of function call is class based: 
-            
-            1. Instance of `hueautotemp.lightCalc.LinCalc` is created at the start of each phase.
-            Class initialization involves calculation of f(time)=mired* for the respective phase.
-            
-            2. `LinCalc.linfunct` is called as an instace variable of the given phase. 
-            Receives the current time (the independent value) as a timedelta value
-            
-            3. Garbage collector end of phase clears the LinCalc object out of memory
-            
-            4. Repeat until program terminates(bedtime)
-            
-            * Hue requires that we convert from kelvin to mired
-            https://en.wikipedia.org/wiki/Mired
-
-2.	Make the lights nice!
-
-
-To use: (assuming RPi talking to router)
-
-1.	in terminal, `arp -a` to find the pi and hue
-
-2.	follow API instructions to create new user and get generated key: http://www.developers.meethue.com/documentation/configuration-api#71_create_user
-
-3.	edit the JSON code in main module to use your new user
-      in `autohue.emmiter.SendJSON`
-      ```python 
-      address = 'http://ADDRESS/api/USER_KEY/lights/3/state/'
-      ```
-
-4.	SSH into pi and transfer the script
-
-5.	run it, `~./main.py` and answer the questions. the program will wait until your set waking time and begin its first cycle
-
-
-cycle = length, starting to ending temp in kelvin
-
-1.	gentle wake = 45min, 2000K to 4500K
-
-2.	transition to day = 15min, 4500K to 6000K
-
-3.	day = length set by user, 6000K to 6000K
-
-4.	first sundown = (3/4)*length set by user, 6000K to 3000K
-
-5.	night phase = (1/4)*length set by user, 3000K to 2000K
-
-
-future improvements:
-
--a linear function does an okay job to mimic daylight, but it could be improved. numerical techniques, specifically a cubic spline interpolation (https://en.wikipedia.org/wiki/Spline_interpolation) would give a nice smooth curve that would better mimic real life temperature change in light. we can use three known points to get our curve: `a(start time, start temp)`, `b(end time/n, some temp)`, `c(end time, end temp)`. 
-point b is the point that would decide the curviness of our curve.
-
--at current, the function itself is computed on a per use basis. it would computationally more efficient to set a function and simply treat it as a scalar
-
--setting up python celery to manage tasking and not always having to worry whether the system was set
-
--web functionality: flask framework since this is so simple, and a front end because we like it pretty
-
--make the lights mimic daylight even more by adding some occasion flutter as if there were clouds passing by
-
---
-//MDorfman

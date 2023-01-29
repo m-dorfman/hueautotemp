@@ -64,6 +64,8 @@ This model gets serialized and put into an S3 bucket. The function also updates 
 TemperatureCycleFn to the new object's name. 
 This function can also be called using API Gateway to generate a new model with new values located in the payload.
 
+Because Numpy is not available in the Lambda instance by default, this function is deployed containerized w/ Numpy.
+
 #### UpdaterFn 
 Receives API requests to turn the lights on and off.
 When the lights get turned off, the cron rule gets disabled to avoid needlessly instantiating.
@@ -86,6 +88,11 @@ The UpdaterFn sends a message containing action and time to an SQS queue. A DB w
 insert into a table on a Postgres RDS instance. The function is invoked by SQS and will pull all available messages from the queue.
 If the function fails to write messages the message will remain in the queue.
 If messages older than an hour are read, an SNS notification will be sent out.
+
+For Python to communicate with the DB psycopg is needed, to the function is deployed containerized to install the dependencies.
+
+This also deploys a VPC with a private and public subnet. The DB instance lives in the private subnet
+and can be communicated with via an NAT inside the public subnet.
 
 ## Cost and Timing Analysis
 This was written recently and I have yet to test.
