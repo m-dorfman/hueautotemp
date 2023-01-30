@@ -4,7 +4,7 @@ This project is an experiment in whether AWS would be a good method by which to 
 to help with sleep schedule and other things like seasonal depression. This project is meant to be deployed on AWS
 and is designed as a serverless application (other than an optional data collection pipeline). Lambda functions are 
 cheap to run so this makes it viable but latency is a potential problem over the span of a day (you'll see a 
-cost and latency analysis below). The lambda functions are Python and the infrastructure is written using AWS CDK for
+cost and latency analysis below). The lambda functions are Python (with Docker) and the infrastructure is written using AWS CDK V2 for
 TypeScript.
 
 ## How to deploy
@@ -91,8 +91,8 @@ If messages older than an hour are read, an SNS notification will be sent out.
 
 For Python to communicate with the DB psycopg is needed, to the function is deployed containerized to install the dependencies.
 
-This also deploys a VPC with a private and public subnet. The DB instance lives in the private subnet
-and can be communicated with via an NAT inside the public subnet.
+This also deploys a VPC with private and public subnets. The DB instance lives in the private subnet
+and can be communicated with via a NAT inside the public subnet.
 
 ## Cost and Timing Analysis
 This was written recently and I have yet to test.

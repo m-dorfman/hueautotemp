@@ -1,13 +1,15 @@
 import * as cdk from 'aws-cdk-lib';
-import { Construct } from 'constructs';
 import { aws_ssm as ssm} from "aws-cdk-lib";
 import { aws_s3 as s3 } from "aws-cdk-lib";
 import { aws_events as events } from "aws-cdk-lib";
-import { TemplateConfig } from "./template-configs";
 import { aws_sqs as sqs } from "aws-cdk-lib";
 import { aws_apigateway as api} from "aws-cdk-lib";
+import { aws_iam as iam } from "aws-cdk-lib";
 import * as functions from "./functions";
-import {ServicePrincipal} from "aws-cdk-lib/aws-iam";
+import {DataCollectionBuild} from "./data_collection";
+import { TemplateConfig } from "./template-configs";
+import { Construct } from 'constructs';
+import {update} from "aws-cdk-lib/cloud-assembly-schema/scripts/update-schema";
 
 export class AutoHueAwsDeployStack extends cdk.Stack {
   constructor(scope: Construct, id: string, templateConfig: TemplateConfig, props?: cdk.StackProps) {
@@ -49,13 +51,26 @@ export class AutoHueAwsDeployStack extends cdk.Stack {
         });
     // permissions for the api to invoke functions
     updaterFn.addPermission('PermitUpdaterFnInvocation', {
-      principal: new ServicePrincipal('apigateway.amazonaws.com'),
+      principal: new iam.ServicePrincipal('apigateway.amazonaws.com'),
       sourceArn: lightsApi.arnForExecuteApi('*'),
     });
     modelGeneratorFn.addPermission('PermitModelGeneratorFnInvocation', {
-      principal: new ServicePrincipal('apigateway.amazonaws.com'),
+      principal: new iam.ServicePrincipal('apigateway.amazonaws.com'),
       sourceArn: lightsApi.arnForExecuteApi('*'),
     });
+
+    if (templateConfig.lambdaFunctions.dbWriteFnModuleName !== undefined) {
+      const dataCollection = new DataCollectionBuild(this, id,
+          templateConfig.lambdaFunctions.dbWriteFnModuleName
+          );
+      updaterFn.addToRolePolicy(new iam.PolicyStatement({
+        actions: [],
+        resources:[dataCollection.queue.queueArn]
+      }));
+      updaterFn.addEnvironment(
+          "WRITE_QUEUE_NAME": dataCollection.queue.queueName
+    );
+    }
   }
 
   private createFunctions(
