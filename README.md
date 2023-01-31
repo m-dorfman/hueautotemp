@@ -1,7 +1,13 @@
 # hueautotemp
+## project moved
+
+[project has been moved here](https://github.com/m-dorfman/circadian_hue)
+
+## about
+
 Automation of Philips Hue eco to help adjust circadian rhythm.
 
-`autohue_aws_deploy` is the AWS deployment variant. 
+`autohue_aws_deploy` is the AWS deployment variant.
 
 Other branches in this project are to deploy on RPI and developing a django app to interact with.
 
